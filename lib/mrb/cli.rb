@@ -6,5 +6,10 @@ module Mrb
     def get()
       %x{git clone https://github.com/mruby/mruby.git}
     end
+
+    desc "version", "show version number"
+    def version()
+      puts Mrb::VERSION
+    end
   end
 end
