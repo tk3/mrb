@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["qtakamitsu@gmail.com"]
 
   spec.summary       = %q{command line tool for mruby}
-  spec.description   = %q{command line tool for mruby}
+  spec.description   = %q{The Command Line Interface is a unified tool to manage your mruby and mrbgems.}
   spec.homepage      = "https://github.com/qtkmz/mrb"
   spec.license       = "MIT"
 
