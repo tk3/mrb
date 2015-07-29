@@ -33,6 +33,18 @@ module Mrb
       File.write "#{full_name}/test/example.rb", ERB.new(Mrb::Template::TEST_MRB).result(binding)
     end
 
+    desc "config", "create mruby build config"
+    def config()
+      text = ''
+      File.open('assets/templates/build_config.rb.erb') do |fin|
+        text = fin.read
+      end
+
+      File.open('./build_config.rb', 'w') do |fout|
+        fout.puts text
+      end
+    end
+
     desc "version", "show version number"
     def version()
       puts Mrb::VERSION
