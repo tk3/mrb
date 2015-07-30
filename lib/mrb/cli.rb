@@ -21,16 +21,26 @@ module Mrb
 
       puts "Creating gem '#{full_name}'..."
 
+      variables = {
+        :full_name => full_name,
+        :name => name,
+      }
+
       FileUtils.mkdir_p full_name
-      File.write "#{full_name}/README.md", ERB.new(Mrb::Template::README).result(binding)
-      File.write "#{full_name}/mrbgem.rake", ERB.new(Mrb::Template::MRBGEM_RAKE).result(binding)
+      File.write "#{full_name}/README.md", Mrb::Template.render('gem/README.md.erb', variables)
+      puts "  create #{full_name}/README.md"
+      File.write "#{full_name}/mrbgem.rake", Mrb::Template.render('gem/mrbgem.rake.erb', variables)
+      puts "  create #{full_name}/mrbgem.rake"
 
       FileUtils.mkdir_p "#{full_name}/src"
-      File.write "#{full_name}/src/example.c", ERB.new(Mrb::Template::SRC).result(binding)
+      File.write "#{full_name}/src/example.c", Mrb::Template.render('gem/example.c.erb', variables)
+      puts "  create #{full_name}/src/example.c"
 
       FileUtils.mkdir_p "#{full_name}/test"
-      File.write "#{full_name}/test/example.c", ERB.new(Mrb::Template::TEST_C).result(binding)
-      File.write "#{full_name}/test/example.rb", ERB.new(Mrb::Template::TEST_MRB).result(binding)
+      File.write "#{full_name}/test/example.c", Mrb::Template.render('gem/test_example.c.erb', variables)
+      puts "  create #{full_name}/test/example.c"
+      File.write "#{full_name}/test/example.rb", Mrb::Template.render('gem/test_example.rb.erb', variables)
+      puts "  create #{full_name}/test/example.rb"
     end
 
     desc "config", "create mruby build config"
