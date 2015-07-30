@@ -45,14 +45,10 @@ module Mrb
 
     desc "config", "create mruby build config"
     def config()
-      text = ''
-      File.open('assets/templates/build_config.rb.erb') do |fin|
-        text = fin.read
-      end
+      variables = {}
 
-      File.open('./build_config.rb', 'w') do |fout|
-        fout.puts text
-      end
+      puts "Creating build_config.rb"
+      File.write './build_config.rb', Mrb::Template.render('config/build_config.rb.erb', variables)
     end
 
     desc "version", "show version number"
