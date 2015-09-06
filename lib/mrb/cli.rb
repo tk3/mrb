@@ -1,6 +1,7 @@
 require 'thor'
 require 'erb'
 require 'fileutils'
+require 'yaml'
 
 module Mrb
   class CLI < Thor
@@ -43,12 +44,29 @@ module Mrb
       puts "  create #{full_name}/test/example.rb"
     end
 
-    desc "config", "create mruby build config"
-    def config()
-      variables = {}
+    desc "config yml", "create mruby build config"
+    def config(file)
+      yaml = YAML.load_file(file)
+
+      text = ''
+      if yaml.key?('build')
+        yaml['build'].keys.each do |name|
+          config = yaml['build'][name]
+          config['name'] = name
+          text << Mrb::Template.render_config('config/build_config_host.erb', config)
+        end
+      end
+
+      if yaml.key?('cross_build')
+        yaml['cross_build'].keys.each do |name|
+          config = yaml['cross_build'][name]
+          config['name'] = name
+          text << Mrb::Template.render_config('config/build_config_crossbuild.erb', config)
+        end
+      end
 
       puts "Creating build_config.rb"
-      File.write './build_config.rb', Mrb::Template.render('config/build_config.rb.erb', variables)
+      File.write "./build_config.rb", text.gsub(/^$\n/, '')
     end
 
     desc "version", "show version number"
