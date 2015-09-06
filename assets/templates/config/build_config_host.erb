@@ -1,0 +1,21 @@
+MRuby::Build.new('<%= config['name'] %>') do |conf|
+<% if config.key?('toolchain') %>
+  toolchain :<%= config['toolchain'] %>
+<% end %>
+
+<% if config.key?('debug') %>
+  enable_debug
+<% end %>
+
+<% config['gem'].each do |gem| %>
+<%   if gem.is_a?(String) %>
+  conf.gem '<%= gem %>'
+<%   elsif gem.is_a?(Hash) && gem.key?('github') %>
+  conf.gem :github => '<%= gem['github'] %>'
+<%   end %>
+<% end %>
+
+<% if config.key?('gembox') %>
+  conf.gembox '<%= config['gembox'] %>'
+<% end %>
+end
