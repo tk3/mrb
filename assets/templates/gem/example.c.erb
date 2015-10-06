@@ -9,12 +9,12 @@ mrb_c_method(mrb_state *mrb, mrb_value self)
 }
 
 void
-mrb_<%= variables[:name] %>_gem_init(mrb_state* mrb) {
+mrb_<%= variables[:internal_name] %>_gem_init(mrb_state* mrb) {
   struct RClass *class_<%= variables[:name] %> = mrb_define_module(mrb, "<%= variables[:name].capitalize %>");
   mrb_define_class_method(mrb, class_<%= variables[:name] %>, "c_method", mrb_c_method, MRB_ARGS_NONE());
 }
 
 void
-mrb_<%= variables[:name] %>_gem_final(mrb_state* mrb) {
+mrb_<%= variables[:internal_name] %>_gem_final(mrb_state* mrb) {
   /* finalizer */
 }

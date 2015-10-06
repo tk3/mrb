@@ -24,6 +24,7 @@ module Mrb
 
       variables = {
         :full_name => full_name,
+        :internal_name => full_name.gsub(/-/, '_'),
         :name => name,
       }
 
