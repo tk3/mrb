@@ -58,9 +58,9 @@ module Mrb
         end
       end
 
-      if yaml.key?('cross_build')
-        yaml['cross_build'].keys.each do |name|
-          config = yaml['cross_build'][name]
+      if yaml.key?('crossbuild')
+        yaml['crossbuild'].keys.each do |name|
+          config = yaml['crossbuild'][name]
           config['name'] = name
           text << Mrb::Template.render_config('config/build_config_crossbuild.erb', config)
         end
