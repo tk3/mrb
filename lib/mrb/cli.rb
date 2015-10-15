@@ -29,19 +29,19 @@ module Mrb
       }
 
       FileUtils.mkdir_p full_name
-      File.write "#{full_name}/README.md", Mrb::Template.render('gem/README.md.erb', variables)
+      File.write "#{full_name}/README.md", Mrb::Template.render_readme(variables)
       puts "  create #{full_name}/README.md"
-      File.write "#{full_name}/mrbgem.rake", Mrb::Template.render('gem/mrbgem.rake.erb', variables)
+      File.write "#{full_name}/mrbgem.rake", Mrb::Template.render_mrbgem(variables)
       puts "  create #{full_name}/mrbgem.rake"
 
       FileUtils.mkdir_p "#{full_name}/src"
-      File.write "#{full_name}/src/example.c", Mrb::Template.render('gem/example.c.erb', variables)
+      File.write "#{full_name}/src/example.c", Mrb::Template.render_example_c(variables)
       puts "  create #{full_name}/src/example.c"
 
       FileUtils.mkdir_p "#{full_name}/test"
-      File.write "#{full_name}/test/example.c", Mrb::Template.render('gem/test_example.c.erb', variables)
+      File.write "#{full_name}/test/example.c", Mrb::Template.render_test_example_c(variables)
       puts "  create #{full_name}/test/example.c"
-      File.write "#{full_name}/test/example.rb", Mrb::Template.render('gem/test_example.rb.erb', variables)
+      File.write "#{full_name}/test/example.rb", Mrb::Template.render_test_example_rb(variables)
       puts "  create #{full_name}/test/example.rb"
     end
 

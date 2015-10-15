@@ -16,6 +16,26 @@ module Mrb
       ERB.new(self.read(name)).result(b)
     end
 
+    def self.render_readme(variables)
+      render('gem/README.md.erb', variables)
+    end
+
+    def self.render_mrbgem(variables)
+      render('gem/mrbgem.rake.erb', variables)
+    end
+
+    def self.render_example_c(variables)
+      render('gem/example.c.erb', variables)
+    end
+
+    def self.render_test_example_c(variables)
+      render('gem/test_example.c.erb', variables)
+    end
+
+    def self.render_test_example_rb(variables)
+      render('gem/test_example.rb.erb', variables)
+    end
+
     private
     def self.config_to_binding(config)
       config = {}  unless config.is_a?(Hash)
