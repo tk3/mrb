@@ -12,23 +12,12 @@ module Mrb
 
     desc "gem NAME", "create necessary files, directory constitution"
     def gem(name)
-      if m = name.match(/^mruby-(.*)/)
-        full_name = name
-        name = m[1]
-      else
-        full_name = "mruby-#{name}"
-        name = name
-      end
-
-      puts "Creating gem '#{full_name}'..."
-
-      variables = {
-        :full_name => full_name,
-        :internal_name => full_name.gsub(/-/, '_'),
-        :name => name,
-      }
+      variables = Util.gen_names(name)
+      full_name = variables[:full_name]
 
       FileUtils.mkdir_p full_name
+      puts "Creating gem '#{full_name}'..."
+
       File.write "#{full_name}/README.md", Mrb::Template.render_readme(variables)
       puts "  create #{full_name}/README.md"
       File.write "#{full_name}/mrbgem.rake", Mrb::Template.render_mrbgem(variables)
