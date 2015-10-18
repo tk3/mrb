@@ -59,6 +59,28 @@ module Mrb
       File.write "./build_config.rb", text.gsub(/^$\n/, '')
     end
 
+    desc "build", "build mruby"
+    def build(file)
+      yaml = YAML.load_file(file)
+
+      if yaml.key?('mruby')
+        if yaml['mruby'].key?('github')
+          github_path = yaml['mruby']['github']
+          %x{git clone https://github.com/#{github_path}.git}
+          mruby_path = './mruby'
+        elsif yaml['mruby'].key?('path')
+          mruby_path = yaml['mruby']['path']
+        end
+
+        puts "Buildding ..."
+        file_path = File.expand_path(file)
+        Dir.chdir(mruby_path) do
+          config file_path
+          %x{rake}
+        end
+      end
+    end
+
     desc "version", "show version number"
     def version()
       puts Mrb::VERSION
