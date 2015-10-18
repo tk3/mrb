@@ -36,6 +36,14 @@ module Mrb
       render('gem/test_example.rb.erb', variables)
     end
 
+    def self.render_build_config_host(config)
+      render_config('config/build_config_host.erb', config)
+    end
+
+    def self.render_build_config_crossbuild(config)
+      render_config('config/build_config_crossbuild.erb', config)
+    end
+
     private
     def self.config_to_binding(config)
       config = {}  unless config.is_a?(Hash)

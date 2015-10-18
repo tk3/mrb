@@ -43,7 +43,7 @@ module Mrb
         yaml['build'].keys.each do |name|
           config = yaml['build'][name]
           config['name'] = name
-          text << Mrb::Template.render_config('config/build_config_host.erb', config)
+          text << Mrb::Template.render_build_config_host(config)
         end
       end
 
@@ -51,7 +51,7 @@ module Mrb
         yaml['crossbuild'].keys.each do |name|
           config = yaml['crossbuild'][name]
           config['name'] = name
-          text << Mrb::Template.render_config('config/build_config_crossbuild.erb', config)
+          text << Mrb::Template.render_build_config_crossbuild(config)
         end
       end
 
