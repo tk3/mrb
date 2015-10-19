@@ -43,4 +43,69 @@ describe Mrb::Template do
       expect(text).to include 'Aaa.respond_to?'
     end
   end
+
+  describe ".render_build_config_host" do
+    it 'replaces class name if build target name is set' do
+      text = Mrb::Template.render_build_config_host(
+        {
+          "name" => "aaa",
+        }
+      )
+      expect(text).to include %q{MRuby::Build.new('aaa') do |conf|}
+    end
+
+    it 'replaces class name if toolchain is set' do
+      text = Mrb::Template.render_build_config_host(
+        {
+          "name" => "host",
+          "toolchain" => "bbb",
+        }
+      )
+      expect(text).to include "toolchain :bbb"
+    end
+
+    it 'replaces class name if debug is enable' do
+      text = Mrb::Template.render_build_config_host(
+        {
+          "name" => "host",
+          "debug" => "enable",
+        }
+      )
+      expect(text).to include 'enable_debug'
+    end
+
+    it 'replaces class name if debug is disable' do
+      text = Mrb::Template.render_build_config_host(
+        {
+          "name" => "host",
+          "debug" => "disable",
+        }
+      )
+      expect(text).not_to include 'enable_debug'
+    end
+
+    it 'replaces class name if debug is not set' do
+      text = Mrb::Template.render_build_config_host(
+        {
+          "name" => "host",
+          "debug" => "",
+        }
+      )
+      expect(text).not_to include 'enable_debug'
+    end
+
+    it 'replaces mrbgems if mrbgems library is set' do
+      text = Mrb::Template.render_build_config_host(
+        {
+          "name" => "host",
+          "gem"=> [
+            'path/to/extension',
+            { "github" => 'github-uri' },
+          ],
+        }
+      )
+      expect(text).to include "conf.gem 'path/to/extension'"
+      expect(text).to include "conf.gem :github => 'github-uri'"
+    end
+  end
 end
