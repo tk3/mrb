@@ -7,11 +7,13 @@ MRuby::Build.new('<%= config['name'] %>') do |conf|
   enable_debug
 <% end %>
 
-<% config['gem'].each do |gem| %>
-<%   if gem.is_a?(String) %>
+<% if config.key?('gem') && config['gem'].is_a?(Array) %>
+<%   config['gem'].each do |gem| %>
+<%     if gem.is_a?(String) %>
   conf.gem '<%= gem %>'
-<%   elsif gem.is_a?(Hash) && gem.key?('github') %>
+<%     elsif gem.is_a?(Hash) && gem.key?('github') %>
   conf.gem :github => '<%= gem['github'] %>'
+<%     end %>
 <%   end %>
 <% end %>
 
