@@ -3,15 +3,17 @@ MRuby::CrossBuild.new('<%= config['name'] %>') do |conf|
   toolchain :<%= config['toolchain'] %>
 <% end %>
 
-<% if config.key?('debug') %>
+<% if config.key?('debug') && config['debug'].casecmp('enable') == 0 %>
   enable_debug
 <% end %>
 
-<% config['gem'].each do |gem| %>
-<%   if gem.is_a?(String) %>
+<% if config.key?('gem') && config['gem'].is_a?(Array) %>
+<%   config['gem'].each do |gem| %>
+<%     if gem.is_a?(String) %>
   conf.gem '<%= gem %>'
-<%   elsif gem.is_a?(Hash) && gem.key?('github') %>
+<%     elsif gem.is_a?(Hash) && gem.key?('github') %>
   conf.gem :github => '<%= gem['github'] %>'
+<%     end %>
 <%   end %>
 <% end %>
 
