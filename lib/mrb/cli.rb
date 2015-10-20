@@ -75,21 +75,24 @@ module Mrb
     def build(file)
       yaml = YAML.load_file(file)
 
-      if yaml.key?('mruby')
-        if yaml['mruby'].key?('github')
-          github_path = yaml['mruby']['github']
-          %x{git clone https://github.com/#{github_path}.git}
-          mruby_path = './mruby'
-        elsif yaml['mruby'].key?('path')
-          mruby_path = yaml['mruby']['path']
-        end
+      if !yaml.is_a?(Hash) || yaml.key?('mruby')
+        $stderr.puts 'Error: Not found mruby location.'
+        return
+      end
 
-        puts "Buildding ..."
-        file_path = File.expand_path(file)
-        Dir.chdir(mruby_path) do
-          config file_path
-          %x{rake}
-        end
+      if yaml['mruby'].key?('github')
+        github_path = yaml['mruby']['github']
+        %x{git clone https://github.com/#{github_path}.git}
+        mruby_path = './mruby'
+      elsif yaml['mruby'].key?('path')
+        mruby_path = yaml['mruby']['path']
+      end
+
+      puts "Buildding ..."
+      file_path = File.expand_path(file)
+      Dir.chdir(mruby_path) do
+        config file_path
+        %x{rake}
       end
     end
 
