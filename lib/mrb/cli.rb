@@ -38,6 +38,18 @@ module Mrb
     def config(file)
       yaml = YAML.load_file(file)
 
+      unless yaml.is_a?(Hash)
+        # minimize_config
+        yaml = {
+          'build' => {
+            'host' => {
+              'toolchain' => 'gcc',
+              'gembox'    => 'default',
+            }
+          }
+        }
+      end
+
       text = ''
       if yaml.key?('build')
         yaml['build'].keys.each do |name|
