@@ -75,7 +75,7 @@ module Mrb
     def build(file)
       yaml = YAML.load_file(file)
 
-      if !yaml.is_a?(Hash) || yaml.key?('mruby')
+      if !yaml.is_a?(Hash) || !yaml.key?('mruby')
         $stderr.puts 'Error: Not found mruby location.'
         return
       end
