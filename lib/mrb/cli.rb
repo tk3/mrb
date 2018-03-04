@@ -1,5 +1,4 @@
 require 'thor'
-require 'erb'
 require 'fileutils'
 require 'yaml'
 
