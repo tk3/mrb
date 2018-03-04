@@ -1,5 +1,7 @@
 # Mrb
 
+![Gem](https://img.shields.io/gem/v/formatador.svg)
+
 The Command Line Interface is a unified tool to manage your mruby and mrbgems.
 
 ## Installation
