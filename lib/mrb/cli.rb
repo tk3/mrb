@@ -1,6 +1,7 @@
 require 'thor'
 require 'fileutils'
 require 'yaml'
+require "mrb/version"
 
 module Mrb
   class CLI < Thor
