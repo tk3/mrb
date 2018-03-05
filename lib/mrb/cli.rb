@@ -107,6 +107,19 @@ module Mrb
       end
     end
 
+    desc "install", "install mruby"
+    option :list
+    def install
+      mrb_config_path_name = ".mrb"
+      config = Config.load "#{mrb_config_path_name}/config"
+
+      if options[:list]
+        puts "available versions:"
+        %w(1.0.0 1.1.0 1.2.0 1.3.0 1.4.0 head).each {|v| puts "  #{v}"}
+        return
+      end
+    end
+
     desc "version", "show version number"
     def version()
       puts Mrb::VERSION
