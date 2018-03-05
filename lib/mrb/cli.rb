@@ -2,6 +2,7 @@ require 'thor'
 require 'fileutils'
 require 'yaml'
 require "mrb/version"
+require "mrb/config"
 
 module Mrb
   class CLI < Thor
@@ -17,6 +18,16 @@ module Mrb
 
       FileUtils.mkdir_p full_name
       puts "Creating gem '#{full_name}'..."
+
+      mrb_config_path_name = ".mrb"
+      FileUtils.mkdir_p "#{full_name}/#{mrb_config_path_name}"
+
+      config = nil
+      if File.exist? "#{full_name}/#{mrb_config_path_name}/config"
+        config = Config.load "#{full_name}/#{mrb_config_path_name}/config"
+      else
+        config = Config.create "#{full_name}/#{mrb_config_path_name}/config"
+      end
 
       File.write "#{full_name}/README.md", Mrb::Template.render_readme(variables)
       puts "  create #{full_name}/README.md"
