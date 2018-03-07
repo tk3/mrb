@@ -133,7 +133,32 @@ module Mrb
         system "MRUBY_CONFIG=../../mrb-build_config.rb ./minirake"
       end
 
+      config["current"]["version"] = version
+      Config.save "#{mrb_config_path_name}/config", config
     end
+
+    desc "test", "execute mruby test"
+    def test()
+      mrb_config_path_name = ".mrb"
+      config = Config.load "#{mrb_config_path_name}/config"
+      version = config["current"]["version"]
+
+      Dir.chdir("#{mrb_config_path_name}/#{version}") do
+        system "MRUBY_CONFIG=../../mrb-build_config.rb ./minirake test"
+      end
+    end
+
+    desc "clean", "clean up build files"
+    def clean()
+      mrb_config_path_name = ".mrb"
+      config = Config.load "#{mrb_config_path_name}/config"
+      version = config["current"]["version"]
+
+      Dir.chdir("#{mrb_config_path_name}/#{version}") do
+        system "MRUBY_CONFIG=../../mrb-build_config.rb ./minirake clean"
+      end
+    end
+
 
     desc "version", "show version number"
     def version()
