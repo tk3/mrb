@@ -109,15 +109,28 @@ module Mrb
 
     desc "install", "install mruby"
     option :list
-    def install
+    def install(version = "")
+      available_versions = %w(1.0.0 1.1.0 1.2.0 1.3.0 1.4.0 head)
+
       mrb_config_path_name = ".mrb"
       config = Config.load "#{mrb_config_path_name}/config"
 
       if options[:list]
         puts "available versions:"
-        %w(1.0.0 1.1.0 1.2.0 1.3.0 1.4.0 head).each {|v| puts "  #{v}"}
+        available_versions.each {|v| puts "  #{v}"}
         return
       end
+
+      unless available_versions.include?(version)
+        $stderr.puts "Error: Not supported version. version=#{version}"
+        return
+      end
+
+      system "git clone #{config["mruby"]["url"]} #{mrb_config_path_name}/#{version}"
+      Dir.chdir("#{mrb_config_path_name}/#{version}") do
+        system "./minirake"
+      end
+
     end
 
     desc "version", "show version number"
