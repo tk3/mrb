@@ -23,6 +23,12 @@ module Mrb
     def self.load(config_path)
       YAML.load_file(config_path)
     end
+
+    def self.save(config_path, config)
+      File.open(config_path, "w") do |fout|
+        YAML.dump(config, fout)
+      end
+    end
   end
 end
 
