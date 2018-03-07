@@ -1,0 +1,12 @@
+MRuby::Build.new do |conf|
+  toolchain :gcc
+
+  conf.gem File.dirname __FILE__
+
+  enable_debug
+
+  conf.enable_bintest
+  conf.enable_test
+
+  conf.gembox 'default'
+end

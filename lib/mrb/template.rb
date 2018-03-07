@@ -24,6 +24,10 @@ module Mrb
       render('gem/mrbgem.rake.erb', variables)
     end
 
+    def self.render_mrb_build_config(variables)
+      render('gem/build_config.rb.erb', variables)
+    end
+
     def self.render_example_c(variables)
       render('gem/example.c.erb', variables)
     end

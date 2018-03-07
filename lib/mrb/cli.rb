@@ -33,6 +33,8 @@ module Mrb
       puts "  create #{full_name}/README.md"
       File.write "#{full_name}/mrbgem.rake", Mrb::Template.render_mrbgem(variables)
       puts "  create #{full_name}/mrbgem.rake"
+      File.write "#{full_name}/mrb-build_config.rb", Mrb::Template.render_mrb_build_config(variables)
+      puts "  create #{full_name}/mrb-build_config.rb"
 
       FileUtils.mkdir_p "#{full_name}/src"
       File.write "#{full_name}/src/example.c", Mrb::Template.render_example_c(variables)
@@ -128,7 +130,7 @@ module Mrb
 
       system "git clone #{config["mruby"]["url"]} #{mrb_config_path_name}/#{version}"
       Dir.chdir("#{mrb_config_path_name}/#{version}") do
-        system "./minirake"
+        system "MRUBY_CONFIG=../../mrb-build_config.rb ./minirake"
       end
 
     end
