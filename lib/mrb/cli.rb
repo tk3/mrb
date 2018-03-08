@@ -112,7 +112,7 @@ module Mrb
     desc "install", "install mruby"
     option :list
     def install(version = "")
-      available_versions = %w(1.0.0 1.1.0 1.2.0 1.3.0 1.4.0 head)
+      available_versions = %w(1.0.0 1.1.0 1.2.0 1.3.0 1.4.0 master)
 
       mrb_config_path_name = ".mrb"
       config = Config.load "#{mrb_config_path_name}/config"
