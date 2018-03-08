@@ -6,6 +6,8 @@ require "mrb/config"
 
 module Mrb
   class CLI < Thor
+    MRB_CONFIG_PATH = ".mrb"
+
     desc "get", "get mruby source code"
     def get()
       %x{git clone https://github.com/mruby/mruby.git}
@@ -19,14 +21,13 @@ module Mrb
       FileUtils.mkdir_p full_name
       puts "Creating gem '#{full_name}'..."
 
-      mrb_config_path_name = ".mrb"
-      FileUtils.mkdir_p "#{full_name}/#{mrb_config_path_name}"
+      FileUtils.mkdir_p "#{full_name}/#{MRB_CONFIG_PATH}"
 
       config = nil
-      if File.exist? "#{full_name}/#{mrb_config_path_name}/config"
-        config = Config.load "#{full_name}/#{mrb_config_path_name}/config"
+      if File.exist? "#{full_name}/#{MRB_CONFIG_PATH}/config"
+        config = Config.load "#{full_name}/#{MRB_CONFIG_PATH}/config"
       else
-        config = Config.create "#{full_name}/#{mrb_config_path_name}/config"
+        config = Config.create "#{full_name}/#{MRB_CONFIG_PATH}/config"
       end
 
       File.write "#{full_name}/README.md", Mrb::Template.render_readme(variables)
@@ -114,8 +115,7 @@ module Mrb
     def install(version = "")
       available_versions = %w(1.0.0 1.1.0 1.2.0 1.3.0 1.4.0 master)
 
-      mrb_config_path_name = ".mrb"
-      config = Config.load "#{mrb_config_path_name}/config"
+      config = Config.load "#{MRB_CONFIG_PATH}/config"
 
       if options[:list]
         puts "available versions:"
@@ -128,37 +128,34 @@ module Mrb
         return
       end
 
-      system "git clone #{config["mruby"]["url"]} #{mrb_config_path_name}/#{version}"
-      Dir.chdir("#{mrb_config_path_name}/#{version}") do
+      system "git clone #{config["mruby"]["url"]} #{MRB_CONFIG_PATH}/#{version}"
+      Dir.chdir("#{MRB_CONFIG_PATH}/#{version}") do
         system "MRUBY_CONFIG=../../mrb-build_config.rb ./minirake"
       end
 
       config["current"]["version"] = version
-      Config.save "#{mrb_config_path_name}/config", config
+      Config.save "#{MRB_CONFIG_PATH}/config", config
     end
 
     desc "test", "execute mruby test"
     def test()
-      mrb_config_path_name = ".mrb"
-      config = Config.load "#{mrb_config_path_name}/config"
+      config = Config.load "#{MRB_CONFIG_PATH}/config"
       version = config["current"]["version"]
 
-      Dir.chdir("#{mrb_config_path_name}/#{version}") do
+      Dir.chdir("#{MRB_CONFIG_PATH}/#{version}") do
         system "MRUBY_CONFIG=../../mrb-build_config.rb ./minirake test"
       end
     end
 
     desc "clean", "clean up build files"
     def clean()
-      mrb_config_path_name = ".mrb"
-      config = Config.load "#{mrb_config_path_name}/config"
+      config = Config.load "#{MRB_CONFIG_PATH}/config"
       version = config["current"]["version"]
 
-      Dir.chdir("#{mrb_config_path_name}/#{version}") do
+      Dir.chdir("#{MRB_CONFIG_PATH}/#{version}") do
         system "MRUBY_CONFIG=../../mrb-build_config.rb ./minirake clean"
       end
     end
-
 
     desc "version", "show version number"
     def version()
