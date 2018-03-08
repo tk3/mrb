@@ -139,21 +139,21 @@ module Mrb
 
     desc "test", "execute mruby test"
     def test()
-      config = Config.load "#{MRB_CONFIG_PATH}/config"
-      version = config["current"]["version"]
-
-      Dir.chdir("#{MRB_CONFIG_PATH}/#{version}") do
-        system "MRUBY_CONFIG=../../mrb-build_config.rb ./minirake test"
-      end
+      invoke :rake, "test"
     end
 
     desc "clean", "clean up build files"
     def clean()
+      invoke :rake, "clean"
+    end
+
+    desc "rake", "execute mruby minirake task"
+    def rake(task = "")
       config = Config.load "#{MRB_CONFIG_PATH}/config"
       version = config["current"]["version"]
 
       Dir.chdir("#{MRB_CONFIG_PATH}/#{version}") do
-        system "MRUBY_CONFIG=../../mrb-build_config.rb ./minirake clean"
+        system "MRUBY_CONFIG=../../mrb-build_config.rb ./minirake #{task}"
       end
     end
 
