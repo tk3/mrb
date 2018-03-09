@@ -15,5 +15,11 @@ module Mrb
         :name => name,
       }
     end
+
+    def self.git_clone_command(mruby_repo_url, version, mrb_config_path)
+      git_cone_cmd = "git clone --depth=1 "
+      git_cone_cmd << " -b #{version} "    unless version.casecmp("master") == 0
+      git_cone_cmd << " #{mruby_repo_url} #{mrb_config_path}/#{version}"
+    end
   end
 end

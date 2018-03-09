@@ -128,10 +128,8 @@ module Mrb
         return
       end
 
-      system "git clone #{config["mruby"]["url"]} #{MRB_CONFIG_PATH}/#{version}"
-      Dir.chdir("#{MRB_CONFIG_PATH}/#{version}") do
-        system "MRUBY_CONFIG=../../mrb-build_config.rb ./minirake"
-      end
+      system Util.git_clone_command(config["mruby"]["url"], version, MRB_CONFIG_PATH)
+      invoke :rake, "", {}
 
       config["current"]["version"] = version
       Config.save "#{MRB_CONFIG_PATH}/config", config
