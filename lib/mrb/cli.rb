@@ -115,8 +115,6 @@ module Mrb
     def install(version = "")
       available_versions = %w(1.0.0 1.1.0 1.2.0 1.3.0 1.4.0 master)
 
-      config = Config.load "#{MRB_CONFIG_PATH}/config"
-
       if options[:list]
         puts "available versions:"
         available_versions.each {|v| puts "  #{v}"}
@@ -127,6 +125,8 @@ module Mrb
         $stderr.puts "Error: Not supported version. version=#{version}"
         return
       end
+
+      config = Config.load "#{MRB_CONFIG_PATH}/config"
 
       system Util.git_clone_command(config["mruby"]["url"], version, MRB_CONFIG_PATH)
       invoke :rake, "", {}
