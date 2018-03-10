@@ -128,6 +128,11 @@ module Mrb
 
       config = Config.load "#{MRB_CONFIG_PATH}/config"
 
+      if File.directory? "#{MRB_CONFIG_PATH}/#{version}"
+        $stderr.puts "Error: already exists path=#{MRB_CONFIG_PATH}/#{version}"
+        return
+      end
+
       system Util.git_clone_command(config["mruby"]["url"], version, MRB_CONFIG_PATH)
       invoke :rake, "", {}
 
