@@ -137,7 +137,30 @@ module Mrb
       invoke :rake, "", {}
 
       config["current"]["version"] = version
+      config["current"]["installed"] << version  unless config["current"]["installed"].include? version
       Config.save "#{MRB_CONFIG_PATH}/config", config
+    end
+
+    desc "versions", "list installed mruby version"
+    def versions()
+      config = Config.load "#{MRB_CONFIG_PATH}/config"
+      current_version = config["current"]["version"]
+      config["current"]["installed"].each do |version|
+        if current_version == version
+          print "* "
+        else
+          print "  "
+        end
+        puts "#{version} (set by #{MRB_CONFIG_PATH}/#{version})"
+      end
+    end
+
+    desc "version", "show current mruby version"
+    def version()
+      config = Config.load "#{MRB_CONFIG_PATH}/config"
+      version = config["current"]["version"]
+
+      puts "#{version} (set by #{MRB_CONFIG_PATH}/#{version})"
     end
 
     desc "test", "execute mruby test"
@@ -158,11 +181,6 @@ module Mrb
       Dir.chdir("#{MRB_CONFIG_PATH}/#{version}") do
         system "MRUBY_CONFIG=../../mrb-build_config.rb ./minirake #{task}"
       end
-    end
-
-    desc "version", "show version number"
-    def version()
-      puts Mrb::VERSION
     end
   end
 end
