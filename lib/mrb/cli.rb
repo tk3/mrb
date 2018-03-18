@@ -163,6 +163,20 @@ module Mrb
       puts "#{version} (set by #{MRB_CONFIG_PATH}/#{version})"
     end
 
+    desc "use", "switch mruby version"
+    def use(version)
+      config = Config.load "#{MRB_CONFIG_PATH}/config"
+      unless config["current"]["installed"].include? version
+        $stderr.puts "Error: not found. version=#{version}"
+        return
+      end
+
+      config["current"]["version"] = version
+      Config.save "#{MRB_CONFIG_PATH}/config", config
+
+      invoke :version, "", {}
+    end
+
     desc "test", "execute mruby test"
     def test()
       invoke :rake, "test"
