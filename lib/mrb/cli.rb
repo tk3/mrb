@@ -141,6 +141,29 @@ module Mrb
       Config.save "#{MRB_CONFIG_PATH}/config", config
     end
 
+    desc "uninstall", "uninstall a specific mruby"
+    def uninstall(version)
+      config = Config.load "#{MRB_CONFIG_PATH}/config"
+      unless config["current"]["installed"].include? version
+        $stderr.puts "Error: not found. version=#{version}"
+        return
+      end
+
+      print "Are you sure you want to remove mruby? (y/n): "
+      answer = STDIN.gets.chomp
+      unless answer == "y"
+        $stderr.puts "cancel"
+        return
+      end
+
+      config["current"]["version"] = ""  if config["current"]["version"] == version
+      config["current"]["installed"] = config["current"]["installed"].delete_if {|v| v == version }
+      Config.save "#{MRB_CONFIG_PATH}/config", config
+
+      FileUtils.rm_rf "#{MRB_CONFIG_PATH}/#{version}"
+      puts "done."
+    end
+
     desc "versions", "list installed mruby version"
     def versions()
       config = Config.load "#{MRB_CONFIG_PATH}/config"
