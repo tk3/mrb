@@ -197,17 +197,17 @@ module Mrb
       config["current"]["version"] = version
       Config.save "#{MRB_CONFIG_PATH}/config", config
 
-      invoke :version, "", {}
+      invoke :version, [], {}
     end
 
     desc "test", "execute mruby test"
     def test()
-      invoke :rake, "test"
+      invoke :rake, ["test"], {}
     end
 
     desc "clean", "clean up build files"
     def clean()
-      invoke :rake, "clean"
+      invoke :rake, ["clean"], {}
     end
 
     desc "rake", "execute mruby minirake task"
