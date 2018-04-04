@@ -111,7 +111,7 @@ module Mrb
     end
 
     desc "install", "install mruby"
-    option :list
+    option :list, :aliases => :l
     def install(version = "")
       available_versions = %w(1.0.0 1.1.0 1.2.0 1.3.0 1.4.0 master)
 
