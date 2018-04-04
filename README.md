@@ -1,6 +1,6 @@
 # Mrb
 
-![Gem](https://img.shields.io/gem/v/formatador.svg)
+[![Gem](https://img.shields.io/gem/v/mrb.svg)](http://rubygems.org/gems/mrb)
 
 The Command Line Interface is a unified tool to manage your mruby and mrbgems.
 
