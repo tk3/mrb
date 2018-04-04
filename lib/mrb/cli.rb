@@ -133,12 +133,12 @@ module Mrb
         return
       end
 
-      system Util.git_clone_command(config["mruby"]["url"], version, MRB_CONFIG_PATH)
-      invoke :rake, "", {}
-
       config["current"]["version"] = version
       config["current"]["installed"] << version  unless config["current"]["installed"].include? version
       Config.save "#{MRB_CONFIG_PATH}/config", config
+
+      system Util.git_clone_command(config["mruby"]["url"], version, MRB_CONFIG_PATH)
+      invoke :rake, "", {}
     end
 
     desc "uninstall", "uninstall a specific mruby"
